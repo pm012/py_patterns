@@ -27,17 +27,20 @@ class Rectangle:
     def height(self, value):
         self._height = value
 
+
 class Square(Rectangle):
     def __init__(self, size):
         Rectangle.__init__(self, size, size)
 
     @Rectangle.width.setter
     def width(self, value):
-        self._width = self._height = value # Breaks LIskow sabstitution principle
+        self._width = self._height = value  # Breaks LIskow sabstitution principle
 
     @Rectangle.height.setter
     def height(self, value):
         self._width = self._height = value
+
+
 # To solve this we don't need a separate Square class and we can
 # use factory to define if the rectangle is a square to resolve this issue
 #
@@ -45,8 +48,9 @@ class Square(Rectangle):
 def use_it(rc):
     w = rc.width
     rc.height = 10
-    expected = int(w*10)
+    expected = int(w * 10)
     print(f'Expected an area of {expected}, got {rc.area}')
+
 
 rc = Rectangle(2, 3)
 use_it(rc)
