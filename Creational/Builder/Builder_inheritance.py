@@ -1,3 +1,6 @@
+from abc import abstractmethod
+
+
 class Person:
     def __init__(self):
         self.name = None
@@ -5,12 +8,12 @@ class Person:
         self.date_of_birth = None
 
     def __str__(self):
-        return f'{self.name} born on {self.date_of_birth}' + \
+        return f'{self.name} born on {self.date_of_birth} ' + \
             f'works as {self.position}'
 
     @staticmethod
     def new():
-        return PersonBuilder()
+        return PersonJobBuilder()
 
 
 class PersonBuilder:
@@ -47,3 +50,6 @@ me = pb \
     .build()
 
 print(me)
+
+pb2 = Person.new().called('John').works_as_a('Worker').build()
+print(pb2)
