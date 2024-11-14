@@ -26,13 +26,24 @@ class Journal:
 #
 # def low_from_web(self, url):
 #     pass
-
+import os
 class PersistanceManager:
+
     @staticmethod
     def save_to_file(journal, filename):
-        file = open(filename, 'w')
-        file.write(str(journal))
-        file.close()
+        path = os.path.dirname(filename)
+        try: 
+            os.makedirs(path)
+        except FileExistsError:
+            pass
+        
+        if not os.path.exists(filename):
+            with open(filename, 'w') as file:
+                file.write(str(journal))    
+        else:
+            file = open(filename, 'w')
+            file.write(str(journal))
+            file.close()
 
 
 j = Journal()
@@ -40,7 +51,7 @@ j.add_entry('I cried today.')
 j.add_entry('I ate a bug.')
 print(f'Journal entries:\n{j}')
 
-file = r'../temp/journal.txt'
+file = r'SOLID/res/journal.txt'
 PersistanceManager.save_to_file(j, file)
 
 with open(file) as fh:
