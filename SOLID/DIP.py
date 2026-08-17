@@ -1,5 +1,5 @@
-# DIP
-from abc import abstractmethod
+# DIP Dependency Inversion Principle
+from abc import ABC, abstractmethod
 from enum import Enum
 
 
@@ -14,9 +14,10 @@ class Person:
         self.name = name
 
 
-class RelationshipBrowser:
+class RelationshipBrowser(ABC):
     @abstractmethod
-    def find_all_children_of(self, name): pass
+    def find_all_children_of(self, name): 
+        pass
 
 
 class Relationships(RelationshipBrowser):
@@ -38,9 +39,12 @@ class Relationships(RelationshipBrowser):
 
 
 class Research:
-    def __init__(self, browser):
-        for p in browser.find_all_children_of('John'):
-            print(f'John has a child called {p}.')
+    def __init__(self, browser: RelationshipBrowser):
+        self.browser = browser # Save the reference to the browser
+
+    def print_children_of(self, name: str):
+        for child in self.browser.find_all_children_of(name):
+            print(f'{name} has a child called {child}.')
 
     # def __init__(self, relationships):
     #     relations = relationships.relations
@@ -49,7 +53,7 @@ class Research:
     #             print(f'John has a child called {r[2].name}.')
 
 
-parent = Person('John')
+parent = Person('Alex')
 child1 = Person('Chris')
 child2 = Person('Matt')
 
@@ -57,4 +61,6 @@ relationships = Relationships()
 relationships.add_parent_and_child(parent, child1)
 relationships.add_parent_and_child(parent, child2)
 
-Research(relationships)
+research = Research(relationships)
+
+research.print_children_of(parent.name)

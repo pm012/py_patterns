@@ -1,4 +1,5 @@
-# ISP
+# ISP Interface Segregation Principle
+
 from abc import abstractmethod
 
 

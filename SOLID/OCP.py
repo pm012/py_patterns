@@ -1,3 +1,5 @@
+# OCP - Open Closed Principle
+
 from enum import Enum
 
 
