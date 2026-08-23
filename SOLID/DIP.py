@@ -43,7 +43,7 @@ class Research:
         self.browser = browser # Save the reference to the browser
 
     def print_children_of(self, name: str):
-        for child in self.browser.find_all_children_of(name):
+        for child in self.browser.find_all_children_of(name):            
             print(f'{name} has a child called {child}.')
 
     # def __init__(self, relationships):
