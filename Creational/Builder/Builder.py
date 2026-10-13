@@ -33,7 +33,7 @@ class HtmlElement:
         return '\n'.join(lines)
 
     def __str__(self):
-        return self.__str(0)
+        return self.__str(0) 
 
     @staticmethod
     def create(name):

@@ -29,9 +29,16 @@ class Point:
             p.y = rho * sin(theta)
             return p
 
+    factory = PointFactory()
+
 
 if __name__ == '__main__':
-    p = Point().PointFactory.new_polar_point(1,2)
-    p2 = Point().PointFactory.new_cartesian_point(2,3)
+    # without factory instance
+    p = Point.PointFactory().new_polar_point(1, 2)
+    p2 = Point.PointFactory().new_cartesian_point(2, 3)
+
+    # with factory instance (more effective because we don't need to create a new instance of the factory every time)
+    # p = Point.factory.new_polar_point(1, 2) 
+    # p2 = Point.factory.new_cartesian_point(2, 3)
     print(p2)
     print(p)
