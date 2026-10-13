@@ -16,7 +16,7 @@ class Coffee(HotDrink):
     def consume(self):
         print('This coffee is delicious')
 
-
+# In Python it is not necessary. We can remove it safely (and remove from the inherited classes). But it must be used in strictly typed languages
 class HotDrinkFactory(ABC):
     def prepare(self, amount):
         pass
@@ -25,15 +25,20 @@ class HotDrinkFactory(ABC):
 class TeaFactory(HotDrinkFactory):
     def prepare(self, amount):
         print(f' Put in tea bag, boil water,'
-              f' pour {amount}ml, enjoy!')
+              f' pour {amount}(ml), enjoy!')
         return Tea()
 
 
 class CoffeeFactory(HotDrinkFactory):
     def prepare(self, amount):
         print(f' Grind some beans,  boil water,'
-              f' pour {amount}ml, enjoy!')
+              f' pour {amount}(ml), enjoy!')
         return Coffee()
+
+class LatteFactory(HotDrinkFactory):
+    def prepare(self, amount):
+        milk_amount = (amount//180)*20
+        print(f'Grind some beans, boil water, pour {amount}(ml), add some {milk_amount}(ml) of milk and enjoy!')
 
 
 def make_drink(type):
@@ -48,6 +53,7 @@ class HotDrinkMachine:
     class AvailableDrink(Enum):
         COFFEE = auto()
         TEA = auto()
+        LATTE = auto()
     factories = []
     initialized = False
 
@@ -62,19 +68,16 @@ class HotDrinkMachine:
 
     def make_drink(self):
         print('Available drinks:')
+        idx = 0
         for f in self.factories:
-            print(f[0])
-        s = input(f'Please, pick a drink ( 0 - {len(self.factories) - 1})')
+            idx += 1
+            print(f'{idx}: {f[0]}')
+            
+        s = input(f'Please, pick a drink ( 1 - {len(self.factories)}): ')
         idx = int(s)
         s = input(f'Specify amount: ')
         amount = int(s)
-        return  self.factories[idx][1].prepare(amount)
-
-
-
-
-
-
+        return  self.factories[idx-1][1].prepare(amount)
 
 
 if __name__ == '__main__':
