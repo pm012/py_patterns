@@ -26,28 +26,29 @@ class LineToPointAdapter():
     cache = {}
 
     def __init__(self, line):
-        self.h = hash(line)
+        #self.h = hash(line) # incorrect hashing as objects are hashed incorrectly
+        self.h = hash((line.start.x, line.start.y, line.end.x, line.end.y)) # tuple is immutable and can be perfectly hashed
         if self.h in self.cache:
             return 
         
-        super().__init__()       
+       # super().__init__()       Incorrect as it just calls object, simply can be removed
 
-        print(f'Generating points for line '
+        print(f'\nGenerating points for line '
               f'[{line.start.x}, {line.start.y}]->'
-              f'[{line.end.x}, {line.end.y}]')
+              f'[{line.end.x}, {line.end.y}]', end='')
         
         left = min(line.start.x, line.end.x)
         right = max(line.start.x, line.end.x)
         top = min(line.start.y, line.end.y)
-        bottom = min(line.start.y, line.end.y)
+        bottom = max(line.start.y, line.end.y)
 
         points = []
         
         if right - left == 0:
-            for y in range(top, bottom):
+            for y in range(top, bottom+1):
                 points.append(Point(left, y))
         elif line.end.y - line.start.y == 0:
-            for x in range(left, right):
+            for x in range(left, right+1):
                 points.append(Point(x, top))
 
         self.cache[self.h] = points
@@ -56,21 +57,30 @@ class LineToPointAdapter():
         return iter(self.cache[self.h])
 
 def draw(rcs):
-    print('\n\n -- Drawing some stuff ----\n')
+    print('\n *** Drawing some stuff ***')
     for rc in rcs:
         for line in rc:
             adapter = LineToPointAdapter(line)
             for p in adapter:
-                draw_point(p)
-             
-
-
+                draw_point(p)       
+        print('\n !!! End Drawing !!!')
 
 if __name__ == '__main__':
+
+    print("@@@ Different rectangles @@@")
     rcs = [
         Rectangle(1,1,10,10),
         Rectangle(3,3,6,6)
     ]
 
+    draw(rcs)
+    draw(rcs)
+
+    print("\n\n @@@ Same rectangles (worked incorrectly with caching objects) @@@")
+    rcs = [
+        Rectangle(3,3,16,16),
+        Rectangle(3,3,16,16)
+    ]
+    
     draw(rcs)
     draw(rcs)

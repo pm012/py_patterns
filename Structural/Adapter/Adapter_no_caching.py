@@ -5,10 +5,9 @@ class Point:
 
 def draw_point(p):
     print('.', end='')
-#^^ given point
 
 class Line:
-    def __init__(self,start, end) -> None:
+    def __init__(self, start, end) -> None:
         self.start = start
         self.end = end
 
@@ -20,46 +19,46 @@ class Rectangle(list):
         self.append(Line(Point(x, y), Point(x, y + height)))
         self.append(Line(Point(x, y + height), Point(x + width, y + height)))
 
-
-
 class LineToPointAdapter(list):
-    count = 0
+    count = 0  # Static field (shared for all instances)
 
     def __init__(self, line):
-        self.count += 1
+        super().__init__()
+        LineToPointAdapter.count += 1  # Increising static counter
 
-        print(f'{self.count}: Generating points for line '
+        print(f'\n[{LineToPointAdapter.count}] Generating points for line '
               f'[{line.start.x}, {line.start.y}]->'
-              f'[{line.end.x}, {line.end.y}]')
+              f'[{line.end.x}, {line.end.y}]: ', end='')
         
         left = min(line.start.x, line.end.x)
         right = max(line.start.x, line.end.x)
         top = min(line.start.y, line.end.y)
-        bottom = min(line.start.y, line.end.y)
+        bottom = max(line.start.y, line.end.y) 
 
+        # Vertical line (X identical)
         if right - left == 0:
-            for y in range(top, bottom):
+            for y in range(top, bottom + 1):
                 self.append(Point(left, y))
+        # Horizontal line (Y everywhere is the same)
         elif line.end.y - line.start.y == 0:
-            for x in range(left, right):
+            for x in range(left, right + 1):
                 self.append(Point(x, top))
 
 def draw(rcs):
-    print('\n\n -- Drawing some stuff ----\n')
+    print('\n\n--- Start Drawing ---')
     for rc in rcs:
         for line in rc:
             adapter = LineToPointAdapter(line)
             for p in adapter:
                 draw_point(p)
-             
-
-
+    print('\n--- End Drawing ---')
 
 if __name__ == '__main__':
     rcs = [
-        Rectangle(1,1,10,10),
-        Rectangle(3,3,6,6)
+        Rectangle(1, 1, 10, 10),
+        Rectangle(3, 3, 6, 6)
     ]
 
+    # Call drawing twice, to see work without chaching
     draw(rcs)
     draw(rcs)
