@@ -5,7 +5,9 @@ class CEO:
     }
 
     def __init__(self) -> None:
-        # TODO Check this line 
+        # Assign the shared state to the instance's __dict__ attribute
+        # __dict__ is a special attribute that stores an object's attributes in a dictionary        
+        #__slots__ = ['name', 'age'] - is used to restrict the attributes that can be added to an instance of a class. It can save memory and improve performance, but it also limits the flexibility of the class. In this case, it is commented out, so the class can have any attributes added to it.
         self.__dict__ = self.__shared_state
 
     def __str__(self) -> str:

@@ -14,11 +14,10 @@ class Database(metaclass = Singleton):
     def __init__(self):
         #self.file_path = 
         self.population = {}
-        f = open (FILE_PATH, 'r')
-        lines = f.readlines()
-        for i in range(0, len(lines), 2):
-            self.population[lines[i].strip()] = int(lines[i+1].strip())
-        f.close()
+        with open(FILE_PATH) as f:
+            lines = f.readlines()
+            for i in range(0, len(lines), 2):
+                self.population[lines[i].strip()] = int(lines[i+1].strip())
 
 class SingletonRecordFinder:
     def total_population(self, cities):
