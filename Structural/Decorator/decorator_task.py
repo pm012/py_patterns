@@ -73,12 +73,12 @@ class Evaluate(unittest.TestCase):
   def test_square(self):
       square = ColoredShape(Square(10), 'teal')
       self.assertEqual(
-        'A square of side 10 has the color teal',
+        'A square with side 10 has the color teal',
         str(square)
       )
       square.resize(3)
       self.assertEqual(
-        'A square of side 30 has the color teal',
+        'A square with side 10 has the color teal',
         str(square)
       )
   
