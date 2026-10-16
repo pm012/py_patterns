@@ -52,15 +52,15 @@ class FirstTestSuite(unittest.TestCase):
         other_values.append(22)
         other_values.append(33)
         
-        # Перевіримо проміжну суму (числа + ManyValues)
+        # Check intermitten sum (number + ManyValues)
         self.assertEqual(other_values.sum, 55)
         
-        # Збираємо все разом
+        # Gather alltogather
         all_values = ManyValues()
         all_values.append(single_value)
         all_values.append(other_values)
         
-        # Фінальна перевірка, як у завданні (.sum без дужок)
+        # Final check, .sum without braces "()"
         self.assertEqual(all_values.sum, 66)
         
 
