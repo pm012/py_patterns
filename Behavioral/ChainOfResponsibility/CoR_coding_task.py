@@ -27,6 +27,9 @@ class FirstTestSuite(unittest.TestCase):
         self.assertEqual(1, goblin.defense)
 Note: creature removal (unsubscription) does not need to be implemented.
 """
+class Creature:
+    pass
+
 class Goblin(Creature):
     def __init__(self, game, attack=1, defense=1):
         # todo
