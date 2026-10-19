@@ -2,6 +2,7 @@ import string
 import random
 #import sys
 import tracemalloc
+import timeit
 
 # 1. Basic class (without optimization)
 class User:
@@ -170,8 +171,55 @@ if __name__ == "__main__":
     percent2 = (saved2 / peak_normal) * 100
     print(f"\nMemory saving due to basic slot: {saved2 / 1024:.2f} KB ({percent2:.1f}%)")
 
-
-
-    
+  
     # Check, that data can be recovered correctly
     print(f"\nCheck output for the first user: {users_ultimate[0]}")
+
+    print('--------------------------------CPU bound ---------------------------------------------------')
+def random_string():
+    chars = string.ascii_lowercase
+    return ''.join([random.choice(chars) for _ in range(8)])
+
+first_names = [random_string() for _ in range(100)]
+last_names = [random_string() for _ in range(100)]
+
+def test_normal():
+    users = []
+    for f in first_names:
+        for l in last_names:
+            users.append(User(f"{f} {l}"))
+    return users
+
+def test_flyweight():
+    User1.strings.clear()
+    User1.strings_list.clear()
+    users = []
+    for f in first_names:
+        for l in last_names:
+            users.append(User1(f"{f} {l}"))
+    return users
+
+def test_slots():
+    UserBestPractice.strings.clear()
+    UserBestPractice.strings_list.clear()
+    users = []
+    for f in first_names:
+        for l in last_names:
+            users.append(UserBestPractice(f"{f} {l}"))
+    return users
+
+def test_ultimate():
+    UserUltimate.strings.clear()
+    UserUltimate.strings_list.clear()
+    users = [UserUltimate(f"{f} {l}") for f in first_names for l in last_names]
+    return users
+
+t_normal = timeit.timeit(test_normal, number=10) / 10 * 1000
+t_flyweight = timeit.timeit(test_flyweight, number=10) / 10 * 1000
+t_slots = timeit.timeit(test_slots, number=10) / 10 * 1000
+t_ultimate = timeit.timeit(test_ultimate, number=10) / 10 * 1000
+
+print(f"Normal: {t_normal:.2f} ms")
+print(f"Flyweight: {t_flyweight:.2f} ms")
+print(f"Slots: {t_slots:.2f} ms")
+print(f"Ultimate: {t_ultimate:.2f} ms")
