@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, value, left, right):
+    def __init__(self, value, left=None, right=None):
         self.value = value
         self.left = left
         self.right = right
@@ -53,8 +53,8 @@ def traverse_in_order(root: Node):
         if current.right:
             for right in traverse(current.right):
                 yield right
-        for node in traverse(root):
-            yield node
+    for node in traverse(root):
+        yield node
         
         
 
@@ -71,10 +71,12 @@ if __name__ == "__main__":
 
     it = iter(root)
 
-    print([next(it)].value for x in range(3))
+    print([next(it).value for x in range(3)])
 
     for x in root:
         print(x.value, end = " ")
+
+    print()
 
     for y in traverse_in_order(root):
         print(y.value, end=" ")
