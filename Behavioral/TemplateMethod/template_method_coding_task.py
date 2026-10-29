@@ -24,17 +24,17 @@ Some examples:
 from abc import ABC, abstractmethod
 
 class Creature:
-    def __init__(self, attack, health):
+    def __init__(self, attack, health:int):
         self.attack = attack
         self.health = health
         self.max_health = health  # Track baseline health for temporary damage resets
 
 class CardGame(ABC):
-    def __init__(self, creatures):
+    def __init__(self, creatures:list):
         self.creatures = creatures
 
     # The Template Method: Defines the combat workflow
-    def combat(self, c1_index, c2_index):
+    def combat(self, c1_index, c2_index)->int:
         c1 = self.creatures[c1_index]
         c2 = self.creatures[c2_index]
 
@@ -58,28 +58,28 @@ class CardGame(ABC):
             return -1  # Both alive or both dead
 
     @abstractmethod
-    def hit(self, attacker, defender):
+    def hit(self, attacker:Creature, defender:Creature)->None:
         """Primitive operation: Dealt damage mechanics vary by game type."""
         pass
 
-    def post_combat_cleanup(self, creature):
+    def post_combat_cleanup(self, creature:Creature)->None:
         """Optional hook: Subclasses can override if they need post-combat logic."""
         pass
 
 
 class TemporaryDamageCardGame(CardGame):
-    def hit(self, attacker, defender):
+    def hit(self, attacker:Creature, defender:Creature)->None:
         # Deal damage directly to the current health pool
         defender.health -= attacker.attack
 
-    def post_combat_cleanup(self, creature):
+    def post_combat_cleanup(self, creature: Creature)->None:
         # Magic: The Gathering style - if the creature survived, heal it back to full
         if creature.health > 0:
             creature.health = creature.max_health
 
 
 class PermanentDamageCardGame(CardGame):
-    def hit(self, attacker, defender):
+    def hit(self, attacker:Creature, defender:Creature)->None:
         # Hearthstone style - damage directly and permanently reduces health pool
         defender.health -= attacker.attack
 
